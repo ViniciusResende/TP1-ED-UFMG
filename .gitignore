@@ -1,0 +1,7 @@
+obj/*
+bin/*
+out/*
+
+analisamem/*
+
+gmon.out
