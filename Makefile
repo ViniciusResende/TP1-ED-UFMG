@@ -35,8 +35,8 @@ OUT_FOLDER = ./out/
 # all sources, objs, and header files
 MAIN = Main
 TARGET = run.out
-SRC = $(wildcard $(SRC_FOLDER)*.cc)
-OBJ = $(patsubst $(SRC_FOLDER)%.cc, $(OBJ_FOLDER)%.o, $(SRC))
+SRC = $(wildcard $(SRC_FOLDER)*.cpp)
+OBJ = $(patsubst $(SRC_FOLDER)%.cpp, $(OBJ_FOLDER)%.o, $(SRC))
 EXE = $(BIN_FOLDER)/run.out
 ANALISAMEM = ./analisamem/bin/analisamem
 
@@ -45,7 +45,7 @@ all: build
 build: $(OBJ)
 	$(CC) $(CXXFLAGS) -o $(BIN_FOLDER)$(TARGET) $(OBJ)
 
-$(OBJ_FOLDER)%.o: $(SRC_FOLDER)%.cc
+$(OBJ_FOLDER)%.o: $(SRC_FOLDER)%.cpp
 	$(CC) $(CXXFLAGS) -c $< -o $@ -I$(INCLUDE_FOLDER)
 
 clean:
