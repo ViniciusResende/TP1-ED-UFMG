@@ -51,6 +51,11 @@ double Player::getMoney() {
   return this->money;
 }
 
+std::string Player::getName() {
+  READMEMLOG((long int) (&(this->name)), sizeof(std::string), this->id);
+  return this->name;
+}
+
 Player::~Player() {
   warnAssert(this->id != -1, "Player instance has already been destroyed");
 

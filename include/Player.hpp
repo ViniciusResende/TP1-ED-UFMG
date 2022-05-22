@@ -19,6 +19,7 @@ class Player {
     Card getPlayerCardByIndex(int idx);
     void setMoney(double value);
     double getMoney();
+    std::string getName();
 
     ~Player();
 
