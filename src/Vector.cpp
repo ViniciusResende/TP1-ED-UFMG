@@ -16,6 +16,8 @@ Vector<T>::Vector(int size) {
   this->id = this->_id;
 
   this->value = (T*) malloc(this->size * sizeof(T));
+
+  this->lastInputedIndex = -1;
 }
 
 template<typename T>
@@ -37,6 +39,18 @@ void Vector<T>::setElement(int idx, T value) {
 
   this->value[idx] = value;
   WRITEMEMLOG((long int) (&(this->value[idx])), sizeof(T), this->id);
+
+  if(idx > this->lastInputedIndex)
+    this->lastInputedIndex = idx;
+}
+
+template<typename T>
+void Vector<T>::pushBack(T value) {
+  errorAssert(this->lastInputedIndex < this->size, "Alocated Vector is already full");
+
+  this->lastInputedIndex += 1;
+  this->value[this->lastInputedIndex] = value;
+  WRITEMEMLOG((long int) (&(this->value[this->lastInputedIndex])), sizeof(T), this->id);
 }
 
 template<typename T>
