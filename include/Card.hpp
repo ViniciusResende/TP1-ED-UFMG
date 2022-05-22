@@ -1,17 +1,17 @@
 #ifndef HEARTHS
-#define HEARTHS 'H'
+#define HEARTHS 'C'
 #endif
 
 #ifndef DIAMONDS
-#define DIAMONDS 'D'
+#define DIAMONDS 'O'
 #endif
 
 #ifndef CLUBS
-#define CLUBS 'C'
+#define CLUBS 'P'
 #endif
 
 #ifndef SPADE
-#define SPADE 'S'
+#define SPADE 'E'
 #endif
 
 #ifndef CARDRH
