@@ -1,5 +1,5 @@
-#ifndef CHAINEDLISTH
-#define CHAINEDLISTH
+#ifndef VECTORH
+#define VECTORH
 
 #include "memlog.h"
 
