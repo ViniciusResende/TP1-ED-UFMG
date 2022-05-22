@@ -20,7 +20,7 @@ Card::Card() : Card(retrieveRandomCardNumber(), retrieveRandomCardSuit(this->ava
 
 Card::Card(int cardNumber, char cardSuit) {
   errorAssert(cardNumber > 0 && cardNumber <= 13, "Invalid card number");
-  errorAssert(cardSuit == HEARTHS || cardSuit == DIAMONDS || cardSuit == CLUBS || cardSuit == SPADE, "Invalid card SUIT");
+  errorAssert((cardSuit == HEARTHS) || (cardSuit == DIAMONDS) || (cardSuit == CLUBS) || (cardSuit == SPADE), "Invalid card SUIT");
 
   this->_id += 1;
   this->id = this->_id;
