@@ -12,6 +12,7 @@
 
 class Player {
   public:  
+    Player();
     Player(std::string name, double initialMoney, Card initialHand[HAND_DEFAULT_SIZE]);
 
     void setPlayerHand(Card initialHand[HAND_DEFAULT_SIZE]);

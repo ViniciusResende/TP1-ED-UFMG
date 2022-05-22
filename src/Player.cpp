@@ -3,6 +3,8 @@
 
 int Player::_id = 0;
 
+Player::Player() {}
+
 Player::Player(std::string name, double initialMoney, Card initialHand[HAND_DEFAULT_SIZE]) {
   errorAssert(!name.empty(), "Invalid name provided");
   errorAssert(initialMoney >= 0, "Initial money can't be negative");
