@@ -68,8 +68,8 @@ T Vector<T>::getElement(int idx) {
   return this->value[idx];
 }
 
-template<typename T>
-void Vector<T>::sortVector() {
+template<>
+void Vector<Card>::sortVector() {
   int Min;
 
   for (int i = 0; i < this->size - 1; i++) {
