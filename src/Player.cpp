@@ -5,7 +5,7 @@ int Player::_id = 0;
 
 Player::Player() {}
 
-Player::Player(std::string name, double initialMoney, Card initialHand[HAND_DEFAULT_SIZE]) {
+Player::Player(std::string name, double initialMoney, Vector<Card> *initialHand) {
   errorAssert(!name.empty(), "Invalid name provided");
   errorAssert(initialMoney >= 0, "Initial money can't be negative");
   
@@ -19,24 +19,19 @@ Player::Player(std::string name, double initialMoney, Card initialHand[HAND_DEFA
   WRITEMEMLOG((long int) (&(this->money)), sizeof(double), this->id);
 
 
-  for(int i = 0; i < HAND_DEFAULT_SIZE; i++) {
-    this->hand[i] = initialHand[i];
-    WRITEMEMLOG((long int) (&(this->hand[i])), sizeof(double), this->id);
-  }
+  this->hand = initialHand;
 }
 
-void Player::setPlayerHand(Card currentHand[HAND_DEFAULT_SIZE]) {
-  for(int i = 0; i < HAND_DEFAULT_SIZE; i++) {
-    this->hand[i] = currentHand[i];
-    WRITEMEMLOG((long int) (&(this->hand[i])), sizeof(Card), this->id);
-  }
+void Player::setPlayerHand(Vector<Card> *currentHand) {
+  this->hand = currentHand;
 }
 
 Card Player::getPlayerCardByIndex(int idx) {
   errorAssert((idx >= 0) && (idx < HAND_DEFAULT_SIZE), "Invalid hand index");
-  READMEMLOG((long int) (&(this->hand[idx])), sizeof(Card), this->id);
+  Card cardHolder = this->hand->getElement(idx);
+  READMEMLOG((long int) (&(cardHolder)), sizeof(Card), this->id);
 
-  return this->hand[idx];
+  return cardHolder;
 }
 
 void Player::setMoney(double value) {

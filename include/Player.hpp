@@ -8,14 +8,15 @@
 #include "memlog.h"
 #include <string>
 
+#include "Vector.hpp"
 #include "Card.hpp"
 
 class Player {
   public:  
     Player();
-    Player(std::string name, double initialMoney, Card initialHand[HAND_DEFAULT_SIZE]);
+    Player(std::string name, double initialMoney, Vector<Card> *initialHand);
 
-    void setPlayerHand(Card initialHand[HAND_DEFAULT_SIZE]);
+    void setPlayerHand(Vector<Card> *initialHand);
     Card getPlayerCardByIndex(int idx);
     void setMoney(double value);
     double getMoney();
@@ -28,7 +29,7 @@ class Player {
     int id;
     std::string name;
     double money;
-    Card hand[HAND_DEFAULT_SIZE];
+    Vector<Card> *hand = new Vector<Card>(HAND_DEFAULT_SIZE);
 };
 
 #endif
