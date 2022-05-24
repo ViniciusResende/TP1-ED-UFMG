@@ -22,6 +22,12 @@ Vector<T>::Vector(int size) {
 }
 
 template<typename T>
+int Vector<T>::length() {
+  READMEMLOG((long int)(&(this->size)), sizeof(int), this->id);
+  return this->size;
+}
+
+template<typename T>
 T Vector<T>::warmUpVector() {  
   T aux = this->value[0];
   READMEMLOG((long int)(&(this->value[0])), sizeof(T), this->id);
