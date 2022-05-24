@@ -2,6 +2,7 @@
 #include "msgassert.h"
 #include "Card.hpp"
 #include "Player.hpp"
+#include "Match.hpp"
 
 template<typename T>
 int Vector<T>::_id = 0;
@@ -74,3 +75,4 @@ template class Vector<int>;
 template class Vector<Card>;
 template class Vector<Player>;
 template class Vector<Player*>;
+template class Vector<Match>;
