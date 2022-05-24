@@ -69,6 +69,21 @@ T Vector<T>::getElement(int idx) {
 }
 
 template<typename T>
+void Vector<T>::sortVector() {
+  int Min;
+
+  for (int i = 0; i < this->size - 1; i++) {
+    Min = i;
+
+    for (int j = i + 1; j < this->size; j++) {
+      if(this->value[j] < this->value[Min])
+        Min = j;
+    }
+    Swap(this->value[i], this->value[Min]);
+  }
+}
+
+template<typename T>
 Vector<T>::~Vector() {
   warnAssert(this->size > 0, "Vector has already been destoyed");
 
