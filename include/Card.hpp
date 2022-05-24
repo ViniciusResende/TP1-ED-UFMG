@@ -20,6 +20,7 @@
 #include "memlog.h"
 #include <string>
 
+#define Swap(A, B) { Card c = A; A = B; B = c; };
 
 class Card {
   public:  
