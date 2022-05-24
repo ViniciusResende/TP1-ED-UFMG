@@ -73,3 +73,4 @@ Vector<T>::~Vector() {
 template class Vector<int>;
 template class Vector<Card>;
 template class Vector<Player>;
+template class Vector<Player*>;
