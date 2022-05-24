@@ -8,10 +8,12 @@ class Vector {
   public:  
     Vector(int size);
 
+    int length();
 		T warmUpVector();
 		void setElement(int idx, T value);
 		T getElement (int idx);
     void pushBack(T value);
+    void sortVector();
 
     ~Vector();
 
