@@ -28,6 +28,7 @@ class Card {
 
     int getCardNumber();
     char getCardSuit();
+    bool operator<(Card other);
 
 
     ~Card();

@@ -42,6 +42,16 @@ char Card::getCardSuit() {
   return this->cardSuit;
 }
 
+bool Card::operator<(Card other) {
+  if(this->cardNumber < other.cardNumber) 
+    return true;
+
+  if((this->cardNumber == other.cardNumber) && (this->cardSuit < other.cardSuit))
+    return true;
+
+  return false;
+}
+
 Card::~Card() {
   warnAssert(this->id != -1, "Card instance has already been destroyed");
 
