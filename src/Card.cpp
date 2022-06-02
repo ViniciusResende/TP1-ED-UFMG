@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Card.hpp"
 #include "msgassert.h"
 
@@ -42,11 +43,29 @@ char Card::getCardSuit() {
   return this->cardSuit;
 }
 
+void Card::printCard() {
+  READMEMLOG((long int) (&(this->cardNumber)), sizeof(int), this->id);
+  READMEMLOG((long int) (&(this->cardSuit)), sizeof(char), this->id);
+  
+  std::cout << this->cardNumber << this->cardSuit << " ";
+}
+
 bool Card::operator<(Card other) {
-  if(this->cardNumber < other.cardNumber) 
+  if(this->cardNumber < other.cardNumber && this->cardNumber != other.cardNumber) 
     return true;
 
-  if((this->cardNumber == other.cardNumber) && (this->cardSuit < other.cardSuit))
+  // if((this->cardNumber == other.cardNumber) && (this->cardSuit < other.cardSuit))
+  //   return true;
+
+  return false;
+}
+
+bool Card::operator>(Card other) {
+  return (!(*(this) < other)) && !(*(this) == other);
+}
+
+bool Card::operator==(Card other) {
+  if((this->cardNumber == other.cardNumber))
     return true;
 
   return false;

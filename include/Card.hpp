@@ -1,26 +1,10 @@
-#ifndef HEARTHS
-#define HEARTHS 'C'
-#endif
-
-#ifndef DIAMONDS
-#define DIAMONDS 'O'
-#endif
-
-#ifndef CLUBS
-#define CLUBS 'P'
-#endif
-
-#ifndef SPADE
-#define SPADE 'E'
-#endif
-
 #ifndef CARDRH
 #define CARDRH
 
 #include "memlog.h"
 #include <string>
 
-#define Swap(A, B) { Card c = A; A = B; B = c; };
+#define SwapCard(A, B) { Card c = A; A = B; B = c; };
 
 class Card {
   public:  
@@ -29,7 +13,10 @@ class Card {
 
     int getCardNumber();
     char getCardSuit();
+    void printCard();
     bool operator<(Card other);
+    bool operator>(Card other);
+    bool operator==(Card other);
 
 
     ~Card();
@@ -42,4 +29,20 @@ class Card {
     char cardSuit;
 };
 
+#endif
+
+#ifndef HEARTHS
+#define HEARTHS 'C'
+#endif
+
+#ifndef SPADE
+#define SPADE 'E'
+#endif
+
+#ifndef DIAMONDS
+#define DIAMONDS 'O'
+#endif
+
+#ifndef CLUBS
+#define CLUBS 'P'
 #endif
