@@ -28,6 +28,8 @@ Player* List::getElement(int idx) {
 }
 
 void List::setElement(int idx, Player* value) {
+  errorAssert(value != NULL && value != nullptr, "Player instance must be previously initialized");
+
   ListCell *cellPointer;
 
   cellPointer = this->setPosition(idx, false);
@@ -36,6 +38,8 @@ void List::setElement(int idx, Player* value) {
 }
 
 void List::pushFront(Player* value) {
+  errorAssert(value != NULL && value != nullptr, "Player instance must be previously initialized");
+
   ListCell *newCell = new ListCell();
 
   newCell->value = value;
@@ -51,6 +55,8 @@ void List::pushFront(Player* value) {
 }
 
 void List::pushBack(Player* value) {
+  errorAssert(value != NULL && value != nullptr, "Player instance must be previously initialized");
+
   ListCell *newCell = new ListCell();
 
   newCell->value = value;
@@ -63,6 +69,8 @@ void List::pushBack(Player* value) {
 }
 
 void List::pushPosition(int idx, Player* value) {
+  errorAssert(value != NULL && value != nullptr, "Player instance must be previously initialized");
+
   ListCell *newCell = new ListCell();
   ListCell *cellPointer = this->setPosition(idx, true);
 
@@ -136,6 +144,8 @@ Player* List::popPosition(int idx) {
 }
 
 Player* List::searchByName(std::string playerName) {
+  errorAssert(!playerName.empty(), "Search name can't be empty");
+
   Player* aux = nullptr;
   ListCell *cellPointer = this->head->next;
 
@@ -149,6 +159,22 @@ Player* List::searchByName(std::string playerName) {
   }
 
   return aux;
+}
+
+// void List::forEach(void (*callback)(Player*)) {
+//   ListCell *it = this->head;
+//   for (int i = 0; i < this->size; i++) {
+//     it = it->next;
+//     callback(it->value);
+//   }
+// }
+
+void List::forEachPlayerReduceMoney(int amount) {
+  ListCell *it = this->head;
+  for (int i = 0; i < this->size; i++) {
+    it = it->next;
+    it->value->decreaseMoneyBy(amount);
+  }
 }
 
 ListCell* List::setPosition(int idx, bool before) {
@@ -167,7 +193,7 @@ ListCell* List::setPosition(int idx, bool before) {
 }
 
 List::~List() {
-  warnAssert(this->size > 0, "Vector has already been destoyed");
+  warnAssert(this->size > 0, "List has already been destoyed");
   ListCell *cellPointer = this->head->next;
 
   while (cellPointer != nullptr) {

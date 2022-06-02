@@ -23,6 +23,8 @@ class List {
     Player* popEnd();
     Player* popPosition(int idx);
     Player* searchByName(std::string playerName);
+    // void forEach(void (callback)(Player*));
+    void forEachPlayerReduceMoney(int amount);
 
     ~List();
 
