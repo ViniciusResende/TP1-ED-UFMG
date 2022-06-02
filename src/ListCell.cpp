@@ -1,4 +1,3 @@
-#include "msgassert.h"
 #include "ListCell.hpp"
 
 ListCell::ListCell() {
@@ -6,6 +5,4 @@ ListCell::ListCell() {
   this->next = nullptr;
 }
 
-ListCell::~ListCell() {
-  delete this->value;
-}
+ListCell::~ListCell() {}
