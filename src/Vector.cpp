@@ -29,6 +29,14 @@ int Vector<T>::length() {
 }
 
 template<typename T>
+bool Vector<T>::vectorIsFullfilled() {
+  READMEMLOG((long int)(&(this->size)), sizeof(int), this->id);
+  READMEMLOG((long int)(&(this->lastInputedIndex)), sizeof(int), this->id);
+
+  return (this->size - 1) == this->lastInputedIndex;
+}
+
+template<typename T>
 T Vector<T>::warmUpVector() {  
   T aux = this->value[0];
   READMEMLOG((long int)(&(this->value[0])), sizeof(T), this->id);

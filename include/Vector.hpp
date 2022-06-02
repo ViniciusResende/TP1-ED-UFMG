@@ -9,6 +9,7 @@ class Vector {
     Vector(int size);
 
     int length();
+    bool vectorIsFullfilled();
 		T warmUpVector();
 		void setElement(int idx, T value);
 		T getElement (int idx);
