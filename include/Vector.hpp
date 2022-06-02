@@ -14,6 +14,7 @@ class Vector {
 		T getElement (int idx);
     void pushBack(T value);
     void sortVector();
+    void sortVectorDesc();
 
     ~Vector();
 

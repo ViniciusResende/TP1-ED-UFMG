@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Vector.hpp"
 #include "msgassert.h"
 #include "Card.hpp"
@@ -79,8 +80,23 @@ void Vector<Card>::sortVector() {
       if(this->value[j] < this->value[Min])
         Min = j;
     }
-    Swap(this->value[i], this->value[Min]);
+    SwapCard(this->value[i], this->value[Min]);
   }
+}
+
+template<>
+void Vector<Player*>::sortVectorDesc() {
+  int Max;
+
+  for (int i = 0; i < this->size - 1; i++) {
+    Max = i;
+
+    for (int j = i + 1; j < this->size; j++) {
+      if(this->value[Max]->getMoney() < this->value[j]->getMoney())
+        Max = j;
+    }
+    SwapPlayer(this->value[i], this->value[Max]);
+  }  
 }
 
 template<typename T>
