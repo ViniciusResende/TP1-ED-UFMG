@@ -202,12 +202,16 @@ void Match::getWinners() {
   if(this->winners->length() != 1) {
     int tieWinner;
     int i = 0;
-    while (i < (this->inMatchPlayers->length() - 1)) {
+    while (i < (this->winners->length() - 1)) {
       tieWinner = this->playerTieBreaker(this->winners->getElement(i), this->winners->getElement(i+1));
       if(tieWinner == FIRST_PLAYER_HAS_WON) {
-        this->winners->popPosition(i+1);
+        this->winners->popPosition(i+1);        
       } else if(tieWinner == SECOND_PLAYER_HAS_WON) {
-        this->winners->popPosition(i);
+        for (int j = i; j >= 0; j--) {
+          Player *test = this->winners->popFront();
+          i--;
+        }        
+        i++;
       } else {
         i++;
       }
