@@ -127,7 +127,7 @@ Player* List::popPosition(int idx) {
   errorAssert(this->size > 0, "Can't pop empty list");
 
   Player* aux;
-  ListCell *cellPointer = this->setPosition(this->size, true);
+  ListCell *cellPointer = this->setPosition(idx, true);
   ListCell *cellPointerAux = cellPointer->next;
 
   cellPointer->next = cellPointerAux->next;
