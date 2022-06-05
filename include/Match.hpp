@@ -22,7 +22,6 @@ class Match {
   public:  
     /**
      * @brief Default constructor for Match class instance that initialize attributes with null values.
-     *
      */
     Match() : inMatchPlayers(nullptr), winners(nullptr) {};
     /**
@@ -41,7 +40,6 @@ class Match {
     void addPlayerToMatch(Player* player);
     /**
      * @brief Prints the match info into console, its attributes, and players. 
-     *
      */
     void printMatch();
     /**
@@ -56,7 +54,6 @@ class Match {
 
     /**
      * @brief Default destructor of the class, that will clean it up when called.
-     *
      */
     ~Match();
     Vector<Player*> *inMatchPlayers;
@@ -71,7 +68,6 @@ class Match {
     /**
      * @brief Function responsible for iterating over the players in a match and determining the winners.
      * Setting this value to winners Match attribute.
-     *
      */
     void getWinners();
     /**

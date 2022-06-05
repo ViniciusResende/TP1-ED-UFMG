@@ -35,7 +35,6 @@ class Card {
     char getCardSuit();
     /**
      * @brief Prints the card into console, follows the format of: cardNumber followed by cardSuit and an empty space " ". 
-     *
      */
     void printCard();
     /**
@@ -68,7 +67,6 @@ class Card {
 
     /**
      * @brief Default destructor of the class, that will clean it up when called.
-     *
      */
     ~Card();
 

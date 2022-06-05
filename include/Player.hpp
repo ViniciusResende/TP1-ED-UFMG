@@ -84,7 +84,6 @@ class Player {
     int getPlayerBet();
     /**
      * @brief Prints the player info into console, its attributes, and cards. 
-     *
      */
     void printPlayer();
     /**
@@ -109,7 +108,6 @@ class Player {
 
     /**
      * @brief Default destructor of the class, that will clean it up when called.
-     *
      */
     ~Player();
 

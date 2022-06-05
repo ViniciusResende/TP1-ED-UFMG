@@ -17,7 +17,6 @@ class Game {
     
     /**
      * @brief Default constructor for Game class instance that initialize attributes with null values.
-     *
      */
     Game() : inGamePlayers(nullptr), inGameMatches(nullptr) {};
     /**
