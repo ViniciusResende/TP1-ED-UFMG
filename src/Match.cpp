@@ -208,7 +208,7 @@ void Match::getWinners() {
         this->winners->popPosition(i+1);        
       } else if(tieWinner == SECOND_PLAYER_HAS_WON) {
         for (int j = i; j >= 0; j--) {
-          Player *test = this->winners->popFront();
+          this->winners->popFront();
           i--;
         }        
         i++;
