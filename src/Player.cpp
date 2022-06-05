@@ -28,11 +28,11 @@ Player::Player(std::string name, double initialMoney, Vector<Card> *initialHand,
   this->hand = initialHand;
 }
 
-void Player::setPlayerHand(Vector<Card> *currentHand) {
-  errorAssert(currentHand->length() == HAND_DEFAULT_SIZE, "Invalid size for hand of cards");
+void Player::setPlayerHand(Vector<Card> *handOfCards) {
+  errorAssert(handOfCards->length() == HAND_DEFAULT_SIZE, "Invalid size for hand of cards");
 
   delete this->hand;
-  this->hand = currentHand;
+  this->hand = handOfCards;
 }
 
 Card Player::getPlayerCardByIndex(int idx) {
