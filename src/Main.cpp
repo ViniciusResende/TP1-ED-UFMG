@@ -23,14 +23,22 @@ struct ConfigStruct {
 
 ConfigStruct config;
 
+/**
+ * @brief Function responsible to print to user a informative menu.
+ */
 void menu() {
   fprintf(stderr,"Poker Game\n");
   fprintf(stderr,"-p filename \t\t(output file to register memory access)\n");
   fprintf(stderr,"-l \t\t(register memory access)\n");
 }
 
-
-void parse_args(int argc,char ** argv) {
+/**
+ * @brief Function responsible to read run time parameters and set config values.
+ * 
+ * @param argc Number of run time parameters.
+ * @param argv Array with run time parameters.
+ */
+void parse_args(int argc, char ** argv) {
   extern char * optarg;
 
   int c;
@@ -55,6 +63,15 @@ void parse_args(int argc,char ** argv) {
     }
 }
 
+/**
+ * @brief Factory: Responsible for creating a Vector of Cards with the size of 5, 
+ * reading the values from an input file. By the end, a pointer to this Vector is returned.
+ * 
+ * @param inputFile A reference to an input file of ifstream type, to read the cards info.
+ * @param buffer String used to store the value being currently read from the input file.
+ * 
+ * @return Returns a pointer to a Vector of Cards with the size of 5, with the read values from the input file.
+ */
 Vector<Card>* handOfCardsFactory(std::ifstream &inputFile, std::string buffer) {
   Vector<Card> *playerHand = new Vector<Card>(HAND_DEFAULT_SIZE);
 
@@ -76,6 +93,17 @@ Vector<Card>* handOfCardsFactory(std::ifstream &inputFile, std::string buffer) {
   return playerHand;
 }
 
+/**
+ * @brief Factory: Responsible for acquiring a Player instance, reading the needed values from an input file. 
+ * By the end, a pointer to this instance is returned.
+ * 
+ * @param inputFile A reference to an input file of ifstream type, to read the cards info.
+ * @param masterGame A pointer to the game where the player is in.
+ * @param initialPlayerMoneyAmount The initial money amount for the created player.
+ * @param buffer String used to store the value being currently read from the input file.
+ * 
+ * @return Returns a pointer to the acquired Player instance.
+ */
 Player* playerFactory(std::ifstream &inputFile, Game* masterGame, int initialPlayerMoneyAmount, std::string buffer) {
   std::string name;
   int betValue;
@@ -97,6 +125,17 @@ Player* playerFactory(std::ifstream &inputFile, Game* masterGame, int initialPla
   return currentPlayer;
 }
 
+/**
+ * @brief Factory: Responsible for creating a Match instance, reading the needed values from an input file. 
+ * By the end, a pointer to this instance is returned.
+ * 
+ * @param inputFile A reference to an input file of ifstream type, to read the cards info.
+ * @param masterGame A pointer to the game where the match is in.
+ * @param initialPlayerMoneyAmount The initial money amount for the match players.
+ * @param buffer String used to store the value being currently read from the input file.
+ * 
+ * @return Returns a pointer to the created Match instance.
+ */
 Match matchFactory(std::ifstream &inputFile, std::ofstream &outFile, Game* masterGame, int initialPlayerMoneyAmount, std::string buffer) {
   int numberOfPlayers, minimumAmountToPlay;
 
@@ -119,13 +158,19 @@ Match matchFactory(std::ifstream &inputFile, std::ofstream &outFile, Game* maste
   return currentMatch;
 }
 
+/**
+ * @brief Function responsible for iterating over the players in the game and printing 
+ * their names followed by the accumulated money amount on the output file.
+ *
+ * @param outFile A reference to an output file of ofstream type, to print the game result.
+ * @param masterGame A pointer to the game (global context).
+ */
 void printGameResult(std::ofstream &outFile, Game* masterGame) {
   outFile << "####" << std::endl;
 
   Match firstMatch = masterGame->inGameMatches->getElement(0);
   errorAssert(firstMatch.inMatchPlayers->length() == masterGame->inGamePlayers->length(), "Not all game players have participated in first match");
   firstMatch.inMatchPlayers->sortVectorDesc();
-
 
   Player* it;
   for (int i = 0; i < firstMatch.inMatchPlayers->length(); i++) {
@@ -134,6 +179,10 @@ void printGameResult(std::ofstream &outFile, Game* masterGame) {
   }  
 }
 
+/**
+ * @brief Orchestrator: Function responsible for orchestrating the Poker game process, 
+ * calling the pertinent methods, and opening the input and output files.
+ */
 void runGameOrchestrator() {
   std::ifstream inputFile(DEFAULT_INPUT_FILE);
   errorAssert(inputFile.is_open(), "\nFailed to open input file");
@@ -164,6 +213,12 @@ void runGameOrchestrator() {
   warnAssert(!outFile.is_open(), "\nFailed to close output file");
 }
 
+/**
+ * @brief Main Function: Responsible for initializing the MemLog lib depending on the run-time 
+ * parameters and calling the game orchestrator function.
+ * @param argc Number of run time parameters.
+ * @param argv Array with run time parameters.
+ */
 int main(int argc, char ** argv) {
   parse_args(argc,argv);
 
