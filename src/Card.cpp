@@ -4,27 +4,12 @@
 
 #define MAXIMUM_CARD_NUMBER 13
 
-int Card::_id = 0;
-char Card::avaliableSuits[4] = {HEARTHS, DIAMONDS, CLUBS, SPADE};
 
-int retrieveRandomCardNumber() {
-  return rand() % MAXIMUM_CARD_NUMBER + 1;
-}
-
-char retrieveRandomCardSuit(char avaliableSuits[4]) {
-  return avaliableSuits[rand() % 4];
-}
-
-Card::Card() : Card(retrieveRandomCardNumber(), retrieveRandomCardSuit(this->avaliableSuits)) {
-  
-}
-
-Card::Card(int cardNumber, char cardSuit) {
+Card::Card(int cardNumber, char cardSuit, int id) {
   errorAssert(cardNumber > 0 && cardNumber <= 13, "Invalid card number");
   errorAssert((cardSuit == HEARTHS) || (cardSuit == DIAMONDS) || (cardSuit == CLUBS) || (cardSuit == SPADE), "Invalid card SUIT");
 
-  this->_id += 1;
-  this->id = this->_id;
+  this->id = id;
 
   this->cardNumber = cardNumber;
   WRITEMEMLOG((long int) (&(this->cardNumber)), sizeof(int), this->id);
@@ -53,9 +38,6 @@ void Card::printCard() {
 bool Card::operator<(Card other) {
   if(this->cardNumber < other.cardNumber && this->cardNumber != other.cardNumber) 
     return true;
-
-  // if((this->cardNumber == other.cardNumber) && (this->cardSuit < other.cardSuit))
-  //   return true;
 
   return false;
 }

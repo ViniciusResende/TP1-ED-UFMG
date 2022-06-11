@@ -12,14 +12,14 @@
 
 class Card {
   public:  
-    Card();
     /**
      * @brief Default constructor for Card class instance 
      *
      * @param cardNumber Number of the card, from 1 (ace) to 13 (king)
      * @param cardSuit Suit of the card, Spades(E), Clubs(P), Hearths(C), Diamonds(O)
+     * @param id Id of the card being created, it is only used for memory usage analysis purpose.
      */
-    Card(int cardNumber, char cardSuit);
+    Card(int cardNumber, char cardSuit, int id);
 
     /**
      * @brief Returns the number associated with the card instance.
@@ -69,10 +69,9 @@ class Card {
      * @brief Default destructor of the class, that will clean it up when called.
      */
     ~Card();
+    int id;
 
   private:
-    static int _id;
-    int id;
     int cardNumber;
     static char avaliableSuits[4];
     char cardSuit;
