@@ -8,8 +8,8 @@ Match::Match(int numberOfPlayers, int minimumAmountToPlay) {
   errorAssert(numberOfPlayers > 0, "Invalid number of players");
   errorAssert(minimumAmountToPlay >= 50, "Invalid value for Minimum Amount to Play, minimum of 50 units");
 
-  this->_id += 1;
   this->id = this->_id;
+  this->_id += 1;
 
   this->inMatchPlayers = new Vector<Player*>(numberOfPlayers);
   this->winners = new List();
@@ -216,10 +216,12 @@ void Match::getWinners() {
         i++;
       }
     }
+
+    this->winners->bubbleSort();
   }
 }
 
-void Match::getGameResult(int totalPlayersInGame, std::ofstream &outFile) {
+void Match::getMatchResult(int totalPlayersInGame, bool &isOperationValid, std::ofstream &outFile) {
   errorAssert(this->inMatchPlayers->vectorIsFullfilled(), "Players vector wasn't fully filled yet");
   errorAssert(outFile, "Output came with NULL value");
 
@@ -228,8 +230,21 @@ void Match::getGameResult(int totalPlayersInGame, std::ofstream &outFile) {
   Player* it;
   for (int i = 0; i < totalNumberOfPlayers; i++) {
     it = this->inMatchPlayers->getElement(i);
+    int currentPlayerBet = it->getPlayerBet();
+    if((currentPlayerBet % 50) != 0) {
+      isOperationValid = false;
+    } else
+      it->decreaseMoneyBy(currentPlayerBet, isOperationValid);
 
-    it->decreaseMoneyBy(it->getPlayerBet());
+    // will retrieve the bet to players that have been charged in a invalid match
+    if(!isOperationValid) {
+      for (int j = i - 1; j >= 0; j--) {
+        it = this->inMatchPlayers->getElement(j);
+        it->increaseMoneyBy(it->getPlayerBet());
+      }
+
+      return;      
+    }
 
     this->totalMatchMoneyAmount += it->getPlayerBet();
     WRITEMEMLOG((long int) (&(this->totalMatchMoneyAmount)), sizeof(int), this->id);
@@ -257,7 +272,6 @@ void Match::getGameResult(int totalPlayersInGame, std::ofstream &outFile) {
 }
 
 Match::~Match() {
-  warnAssert(this->id == -1, "Match has already been destroyed");
   this->id = -1;
   this->minimumAmountToPlay = 0;
   this->totalMatchMoneyAmount = 0;

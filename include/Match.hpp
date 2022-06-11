@@ -48,9 +48,11 @@ class Match {
      * and by the end share the accumulated pot with the winners.
      *
      * @param totalPlayersInGame Number of players that are participating of the game (global context).
+     * @param isOperationValid This is a reference to a boolean variable that will have 
+     * its value changed according to the validity of the operation.
      * @param outFile A reference to an output file of ofstream type, to print the game result.
      */
-    void getGameResult(int totalPlayersInGame, std::ofstream &outFile);
+    void getMatchResult(int totalPlayersInGame, bool &isOperationValid, std::ofstream &outFile);
 
     /**
      * @brief Default destructor of the class, that will clean it up when called.
@@ -58,10 +60,10 @@ class Match {
     ~Match();
     Vector<Player*> *inMatchPlayers;
     List *winners;
+    int id;
 
   private:
     static int _id;
-    int id;
     int minimumAmountToPlay;
     int totalMatchMoneyAmount;
 
