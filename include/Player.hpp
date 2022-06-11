@@ -23,8 +23,9 @@ class Player {
      * @param initialMoney Money that player will start the game with
      * @param initialHand Initial hand of cards that the player will start at its first match (Data Structure Type: Vector<Card>(5))
      * @param playerBet Bet made by the player at its first match
+     * @param id Id of the Player being created, it is only used for memory usage analysis purpose.
      */
-    Player(std::string name, double initialMoney, Vector<Card> *initialHand, int playerBet);
+    Player(std::string name, int initialMoney, Vector<Card> *initialHand, int playerBet, int id);
 
     /**
      * @brief Setter function that is responsible for change the current card hand of player.
@@ -45,25 +46,27 @@ class Player {
      *
      * @param value New value to be assigned as player money.
      */
-    void setMoney(double value);
+    void setMoney(int value);
     /**
      * @brief Function responsible to increase player money attribute by a value passed as parameter. 
      *
      * @param value Value to be increased at player money.
      */
-    void increaseMoneyBy(double value);
+    void increaseMoneyBy(int value);
     /**
      * @brief Function responsible to decrease player money attribute by a value passed as parameter. 
      *
      * @param value Value to be decreased at player money.
+     * @param isOperationValid This is a reference to a boolean variable that will have 
+     * its value changed according to the validity of the operation.
      */
-    void decreaseMoneyBy(double value);
+    void decreaseMoneyBy(int value, bool &isOperationValid);
     /**
      * @brief Getter function responsible for returning the current money of a player. 
      *
      * @return Returns the value of the player money attribute.
      */
-    double getMoney();
+    int getMoney();
     /**
      * @brief Getter function responsible for returning the name of a player. 
      *
@@ -110,12 +113,11 @@ class Player {
      * @brief Default destructor of the class, that will clean it up when called.
      */
     ~Player();
+    int id;
 
   private:
-    static int _id;
-    int id;
     std::string name;
-    double money;
+    int money;
     int playerBet;
     Vector<Card> *hand = new Vector<Card>(HAND_DEFAULT_SIZE);
 

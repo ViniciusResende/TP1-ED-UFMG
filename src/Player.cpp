@@ -2,28 +2,20 @@
 #include "Player.hpp"
 #include "msgassert.h"
 
-int Player::_id = 0;
-
 Player::Player() {}
 
-Player::Player(std::string name, double initialMoney, Vector<Card> *initialHand, int playerBet) {
+Player::Player(std::string name, int initialMoney, Vector<Card> *initialHand, int playerBet, int id) {
   errorAssert(!name.empty(), "Invalid name provided");
   errorAssert(initialMoney >= 0, "Initial money can't be negative");
-  errorAssert(playerBet % 50 == 0, "Player bet must be a multiple of 50");
+  warnAssert(playerBet % 50 == 0, "Player bet must be a multiple of 50");
   errorAssert(playerBet > 0, "Player bet must be a positive and not null value");
   errorAssert(initialHand->length() == HAND_DEFAULT_SIZE, "Invalid size for hand of cards");
   
-  this->_id += 1;
-  this->id = this->_id;
+  this->id = id;
 
-  this->name = name;
-  WRITEMEMLOG((long int) (&(this->name)), sizeof(std::string), this->id);
-  
+  this->name = name;  
   this->money = initialMoney;
-  WRITEMEMLOG((long int) (&(this->money)), sizeof(double), this->id);
-
   this->playerBet = playerBet;
-  WRITEMEMLOG((long int) (&(this->playerBet)), sizeof(int), this->id);
 
   this->hand = initialHand;
 }
@@ -39,65 +31,63 @@ Card Player::getPlayerCardByIndex(int idx) {
   errorAssert((idx >= 0) && (idx < HAND_DEFAULT_SIZE), "Invalid hand card index");
 
   Card cardHolder = this->hand->getElement(idx);
-  READMEMLOG((long int) (&(cardHolder)), sizeof(Card), this->id);
+  READMEMLOG((long int) (&(cardHolder.id)), sizeof(int), this->id);
 
   return cardHolder;
 }
 
-void Player::setMoney(double value) {
+void Player::setMoney(int value) {
   errorAssert(value >= 0, "Money value can't be negative");
 
   this->money = value;
-  WRITEMEMLOG((long int) (&(this->money)), sizeof(double), this->id);
+  WRITEMEMLOG((long int) (&(this->money)), sizeof(int), this->id);
 }
 
-void Player::increaseMoneyBy(double value) {
+void Player::increaseMoneyBy(int value) {
   errorAssert((this->money + value) >= 0, "Increasing money by a negative value that will cause negative Player money");
   warnAssert(value >= 0, "You should't use increaseMoneyBy method with negative values, use decreaseMoneyBy method instead");
 
   this->money += value;
-  READMEMLOG((long int) (&(this->money)), sizeof(double), this->id);
-  WRITEMEMLOG((long int) (&(this->money)), sizeof(double), this->id);
+  READMEMLOG((long int) (&(this->money)), sizeof(int), this->id);
+  WRITEMEMLOG((long int) (&(this->money)), sizeof(int), this->id);
 }
 
-void Player::decreaseMoneyBy(double value) {
-  errorAssert((this->money - value) >= 0, "You can't decrease more money than player have");
+void Player::decreaseMoneyBy(int value, bool &isOperationValid) {
+  int newMoneyValue = this->money - value;
+  READMEMLOG((long int) (&(this->money)), sizeof(int), this->id);
+  warnAssert(newMoneyValue >= 0, "You can't decrease more money than player have. This match will be canceled");
   warnAssert(value >= 0, "You should't use decreaseMoneyBy method with negative values, use increaseMoneyBy method instead");
 
-  this->money -= value;
-  READMEMLOG((long int) (&(this->money)), sizeof(double), this->id);
-  WRITEMEMLOG((long int) (&(this->money)), sizeof(double), this->id);
-}
+  if(newMoneyValue >= 0) {
+    isOperationValid = true;
+    this->money = newMoneyValue;
+    WRITEMEMLOG((long int) (&(this->money)), sizeof(int), this->id);
+  } else 
+    isOperationValid = false;
+} 
 
-double Player::getMoney() {
-  READMEMLOG((long int) (&(this->money)), sizeof(double), this->id);
+
+int Player::getMoney() {
+  READMEMLOG((long int) (&(this->money)), sizeof(int), this->id);
   return this->money;
 }
 
 void Player::setPlayerBet(int value) {
   errorAssert(value >= 0, "Player bet value can't be negative");
-  errorAssert(playerBet % 50 == 0, "Player bet must be a multiple of 50");
+  warnAssert(value % 50 == 0, "Player bet must be a multiple of 50");
 
   this->playerBet = value;
-  WRITEMEMLOG((long int) (&(this->playerBet)), sizeof(int), this->id);
 }
 
 int Player::getPlayerBet() {
-  READMEMLOG((long int) (&(this->playerBet)), sizeof(int), this->id);
   return this->playerBet;
 }
 
 std::string Player::getName() {
-  READMEMLOG((long int) (&(this->name)), sizeof(std::string), this->id);
   return this->name;
 }
 
 void Player::printPlayer() {
-  READMEMLOG((long int) (&(this->id)), sizeof(int), this->id);
-  READMEMLOG((long int) (&(this->name)), sizeof(std::string), this->id);
-  READMEMLOG((long int) (&(this->money)), sizeof(double), this->id);
-  READMEMLOG((long int) (&(this->gameInHand)), sizeof(int), this->id);
-
   std::cout << "ID: " << this->id << std::endl;
   std::cout << "Name: " << this->name << std::endl;
   std::cout << "Money: " << this->money << std::endl;
