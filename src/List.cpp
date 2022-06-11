@@ -14,7 +14,6 @@ List::List() {
 }
 
 int List::length() {
-  READMEMLOG((long int)(&(this->size)), sizeof(int), this->id);
   return this->size;
 }
 
@@ -22,7 +21,6 @@ Player* List::getElement(int idx) {
   ListCell *cellPointer;
 
   cellPointer = this->setPosition(idx, false);
-  READMEMLOG((long int)(&(cellPointer->value)), sizeof(Player*), this->id);
 
   return cellPointer->value;
 }
@@ -34,7 +32,6 @@ void List::setElement(int idx, Player* value) {
 
   cellPointer = this->setPosition(idx, false);
   cellPointer->value = value;
-  WRITEMEMLOG((long int)(&(cellPointer->value)), sizeof(ListCell), this->id);
 }
 
 void List::pushFront(Player* value) {
@@ -45,8 +42,6 @@ void List::pushFront(Player* value) {
   newCell->value = value;
   newCell->next = this->head->next;
   this->head->next = newCell;
-
-  WRITEMEMLOG((long int)(&(newCell)), sizeof(ListCell*), this->id);
 
   this->size++;
 
@@ -63,8 +58,6 @@ void List::pushBack(Player* value) {
   this->tail->next = newCell;
   this->tail = newCell;
 
-  WRITEMEMLOG((long int)(&(newCell)), sizeof(ListCell*), this->id);
-
   this->size++;
 }
 
@@ -77,8 +70,6 @@ void List::pushPosition(int idx, Player* value) {
   newCell->value = value;
   newCell->next = cellPointer->next;
   cellPointer->next = newCell;
-
-  WRITEMEMLOG((long int)(&(newCell)), sizeof(ListCell*), this->id);
 
   this->size++;
 
@@ -101,7 +92,6 @@ Player* List::popFront() {
   aux = cellPointer->value;
   delete cellPointer;  
 
-  READMEMLOG((long int)(&(aux)), sizeof(Player*), this->id);
   return aux;
 }
 
@@ -119,7 +109,6 @@ Player* List::popEnd() {
 
   this->tail = cellPointer;
 
-  READMEMLOG((long int)(&(aux)), sizeof(Player*), this->id);
   return aux;
 }
 
@@ -139,7 +128,6 @@ Player* List::popPosition(int idx) {
   if(cellPointer->next == nullptr)
     this->tail = cellPointer;
 
-  READMEMLOG((long int)(&(aux)), sizeof(Player*), this->id);
   return aux;
 }
 
@@ -152,8 +140,6 @@ Player* List::searchByName(std::string playerName) {
   while (cellPointer != nullptr) {
     if(cellPointer->value->getName() == playerName) {
       aux = cellPointer->value;
-    
-      READMEMLOG((long int)(&(aux)), sizeof(Player*), this->id);
     }
     cellPointer = cellPointer->next;
   }
@@ -161,19 +147,48 @@ Player* List::searchByName(std::string playerName) {
   return aux;
 }
 
-// void List::forEach(void (*callback)(Player*)) {
-//   ListCell *it = this->head;
-//   for (int i = 0; i < this->size; i++) {
-//     it = it->next;
-//     callback(it->value);
-//   }
-// }
+void List::swapConsecutiveListCells(ListCell *fistCell, ListCell *secondCell, ListCell *cellBeforeFirst) {
+  cellBeforeFirst->next = secondCell;
+  fistCell->next = secondCell->next;
+  secondCell->next = fistCell;
 
-void List::forEachPlayerReduceMoney(int amount) {
+  if(fistCell->next == nullptr)
+    this->tail = fistCell;
+}
+
+void List::bubbleSort() {
+  ListCell *currentCell, *previousCell, *nextCell;
+
+  for (int i = 0; i < this->size; i++) {
+    currentCell = this->head->next;
+    previousCell = this->head;
+    for (int j = 0; j < this->size-1; j++) {
+      nextCell = currentCell->next;
+      if (currentCell->value->getName() > nextCell->value->getName())
+        this->swapConsecutiveListCells(currentCell, nextCell, previousCell);
+      previousCell = currentCell;
+      currentCell = currentCell->next;
+    }
+  }
+}
+
+int List::forEachPlayerReduceMoney(int amount, bool &isOperationValid) {
   ListCell *it = this->head;
   for (int i = 0; i < this->size; i++) {
     it = it->next;
-    it->value->decreaseMoneyBy(amount);
+    it->value->decreaseMoneyBy(amount, isOperationValid);
+    if(!isOperationValid)
+      return i;
+  }
+
+  return -1;
+}
+
+void List::forEachPlayerRaiseMoney(int amount, int limitIdx) {
+  ListCell *it = this->head;
+  for (int i = 0; i < limitIdx + 1; i++) {
+    it = it->next;
+    it->value->increaseMoneyBy(amount);
   }
 }
 

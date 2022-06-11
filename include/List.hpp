@@ -85,13 +85,26 @@ class List {
      * or nullptr in case of the player hasn't been found.
      */
     Player* searchByName(std::string playerName);
-    // void forEach(void (callback)(Player*));
+    /**
+     * @brief This method is responsible for ordering the chained list of players by their names, it is, in alphabetical order.
+     */
+    void bubbleSort();
     /**
      * @brief Method responsible for reducing, from each player in the list, a specified amount of money. 
      *
      * @param amount Amount of money to be reduced from each player.
+     * @param isOperationValid This is a reference to a boolean variable that will have 
+     * its value changed according to the validity of the operation.
      */
-    void forEachPlayerReduceMoney(int amount);
+    int forEachPlayerReduceMoney(int amount, bool &isOperationValid);
+     /**
+     * @brief Method responsible for raising, from each player in the list, 
+     * until a certain value, a specified amount of money. 
+     *
+     * @param amount Amount of money to be raised from each player.
+     * @param limitIdx This is the limit Player index to be included in the raise.
+     */
+    void forEachPlayerRaiseMoney(int amount, int limitIdx);
 
     /**
      * @brief Default destructor of the class, that will clean it up when called and free the allocated memory.
@@ -114,6 +127,15 @@ class List {
      * @return Returns a pointer to the list cell in the specified position.
      */
     ListCell* setPosition(int idx, bool before);
+     /**
+     * @brief This method is responsible for switching two consecutive elements of 
+     * the list, really helpful when working with Bubble Sort algorithms.
+     *
+     * @param fistCell Pointer to the first cell of the two consecutive to be switched.
+     * @param secondCell Pointer to the second cell of the two consecutive to be switched.
+     * @param cellBeforeFirst Pointer to the cell before the first cell of the two consecutive to be switched.
+     */
+    void swapConsecutiveListCells(ListCell *fistCell, ListCell *secondCell, ListCell *cellBeforeFirst);
 };
 
 #endif
