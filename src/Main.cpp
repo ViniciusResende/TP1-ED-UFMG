@@ -69,10 +69,11 @@ void parse_args(int argc, char ** argv) {
  * 
  * @param inputFile A reference to an input file of ifstream type, to read the cards info.
  * @param buffer String used to store the value being currently read from the input file.
+ * @param id Id of the Card being created, it is only used for memory usage analysis purpose.
  * 
  * @return Returns a pointer to a Vector of Cards with the size of 5, with the read values from the input file.
  */
-Vector<Card>* handOfCardsFactory(std::ifstream &inputFile, std::string buffer) {
+Vector<Card>* handOfCardsFactory(std::ifstream &inputFile, std::string buffer, int id) {
   Vector<Card> *playerHand = new Vector<Card>(HAND_DEFAULT_SIZE);
 
   for (int k = 0; k < HAND_DEFAULT_SIZE; k++) {
@@ -84,7 +85,7 @@ Vector<Card>* handOfCardsFactory(std::ifstream &inputFile, std::string buffer) {
 
     int cardNumber = stoi(cardSpecification);
 
-    Card currentCard = Card(cardNumber, cardSuit);
+    Card currentCard = Card(cardNumber, cardSuit, id);
     playerHand->setElement(k, currentCard);
   }
   
@@ -101,10 +102,11 @@ Vector<Card>* handOfCardsFactory(std::ifstream &inputFile, std::string buffer) {
  * @param masterGame A pointer to the game where the player is in.
  * @param initialPlayerMoneyAmount The initial money amount for the created player.
  * @param buffer String used to store the value being currently read from the input file.
+ * @param id Id of the Player and Cards being created, it is only used for memory usage analysis purpose.
  * 
  * @return Returns a pointer to the acquired Player instance.
  */
-Player* playerFactory(std::ifstream &inputFile, Game* masterGame, int initialPlayerMoneyAmount, std::string buffer) {
+Player* playerFactory(std::ifstream &inputFile, Game* masterGame, int initialPlayerMoneyAmount, std::string buffer, int id) {
   std::string name;
   int betValue;
 
@@ -118,9 +120,9 @@ Player* playerFactory(std::ifstream &inputFile, Game* masterGame, int initialPla
 
   betValue = stoi(buffer);
 
-  Vector<Card> *playerHand = handOfCardsFactory(inputFile, buffer);
+  Vector<Card> *playerHand = handOfCardsFactory(inputFile, buffer, id);
 
-  Player *currentPlayer = masterGame->retrievePlayerInstance(name, initialPlayerMoneyAmount, betValue, playerHand);
+  Player *currentPlayer = masterGame->retrievePlayerInstance(name, initialPlayerMoneyAmount, betValue, playerHand, id);
 
   return currentPlayer;
 }
@@ -147,13 +149,21 @@ Match matchFactory(std::ifstream &inputFile, std::ofstream &outFile, Game* maste
   Match currentMatch = Match(numberOfPlayers, minimumAmountToPlay);
 
   for (int j = 0; j < numberOfPlayers; j++) {
-    Player *currentPlayer = playerFactory(inputFile, masterGame, initialPlayerMoneyAmount, buffer);
+    Player *currentPlayer = playerFactory(inputFile, masterGame, initialPlayerMoneyAmount, buffer, currentMatch.id);
     currentMatch.addPlayerToMatch(currentPlayer);
   }
 
-  masterGame->chargeTheMinimunAmountToPlay(minimumAmountToPlay);
-  currentMatch.getGameResult(masterGame->inGamePlayers->length(), outFile);    
-  currentMatch.printMatch();
+  bool isChargeOperationValid;
+  masterGame->chargeTheMinimunAmountToPlay(minimumAmountToPlay, isChargeOperationValid);
+  if(isChargeOperationValid){
+    bool isGetMatchRestultValid;
+    currentMatch.getMatchResult(masterGame->inGamePlayers->length(), isGetMatchRestultValid, outFile);  
+
+    if(isGetMatchRestultValid) {
+      if(config.regmem) currentMatch.printMatch();
+    } else 
+      masterGame->giveBackTheMinimunAmountToPlay(minimumAmountToPlay);
+  }
 
   return currentMatch;
 }
