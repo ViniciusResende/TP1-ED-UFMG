@@ -41,17 +41,27 @@ class Game {
      * @param initialMoney Money that player will start the game with
      * @param initialHand Initial hand of cards that the player will start at its first match (Data Structure Type: Vector<Card>(5))
      * @param playerBet Bet made by the player at its first match
+     * @param id Id of the Player being created, it is only used for memory usage analysis purpose.
      * 
      * @return Returns a pointer to the player instance created or searched and updated.
      */
-    Player* retrievePlayerInstance(std::string name, int initialPlayerMoneyAmount, int playerBet, Vector<Card> *playerHand);
+    Player* retrievePlayerInstance(std::string name, int initialPlayerMoneyAmount, int playerBet, Vector<Card> *playerHand, int id);
     /**
      * @brief This function is responsible for charge the minimum amount to play (Pingo) 
      * of all players in the game context.
      *
      * @param minimumAmountToPlay The minimum amount to play required for a match (Pingo)
+     * @param isOperationValid This is a reference to a boolean variable that will have 
+     * its value changed according to the validity of the operation.
      */
-    void chargeTheMinimunAmountToPlay(int minimumAmountToPlay);
+    void chargeTheMinimunAmountToPlay(int minimumAmountToPlay, bool &isOperationValid);
+    /**
+     * @brief This function is responsible for give back the minimum amount to play (Pingo) 
+     * of all players in the game context.
+     *
+     * @param minimumAmountToPlay The minimum amount to play required for a match (Pingo)
+     */
+    void giveBackTheMinimunAmountToPlay(int minimumAmountToPlay);
   private: 
     /**
      * @brief Function responsible for adding a player in the game context (inGamePlayers). 

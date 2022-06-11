@@ -16,7 +16,7 @@ void Game::addPlayerToGame(Player *player) {
   this->inGamePlayers->pushFront(player);
 }
 
-Player* Game::retrievePlayerInstance(std::string name, int initialPlayerMoneyAmount, int playerBet, Vector<Card> *playerHand) {
+Player* Game::retrievePlayerInstance(std::string name, int initialPlayerMoneyAmount, int playerBet, Vector<Card> *playerHand, int id) {
   Player* aux = this->inGamePlayers->searchByName(name);
 
   if(aux != nullptr) {
@@ -25,25 +25,22 @@ Player* Game::retrievePlayerInstance(std::string name, int initialPlayerMoneyAmo
     return aux;
   }
 
-  aux = new Player(name, initialPlayerMoneyAmount, playerHand, playerBet);
+  aux = new Player(name, initialPlayerMoneyAmount, playerHand, playerBet, id);
   this->addPlayerToGame(aux);
 
   return aux;
 }
 
-void Game::chargeTheMinimunAmountToPlay(int minimumAmountToPlay) {
+void Game::chargeTheMinimunAmountToPlay(int minimumAmountToPlay, bool &isOperationValid) {
   errorAssert(minimumAmountToPlay >= 50, "Invalid value for Minimum Amount to Play, minimum of 50 units");
-  // void chargeAmountFromPlayer(Player* current) {
-  //   current->
-  // }
+  
+  int indexOfError = this->inGamePlayers->forEachPlayerReduceMoney(minimumAmountToPlay, isOperationValid);
 
-  // Player* it;
-  // for (int i = 0; i < this->inGamePlayers->length(); i++) {
-  //   it = this->inGamePlayers->getElement(i);
-  //   it->decreaseMoneyBy(minimumAmountToPlay);
-  // }
-  // auto test = [minimumAmountToPlay] (Player *current) {
-  //   current->decreaseMoneyBy(minimumAmountToPlay);
-  // };
-  this->inGamePlayers->forEachPlayerReduceMoney(minimumAmountToPlay);
+  if(indexOfError != -1) 
+    this->inGamePlayers->forEachPlayerRaiseMoney(minimumAmountToPlay, indexOfError - 1);
+}
+
+void Game::giveBackTheMinimunAmountToPlay(int minimumAmountToPlay) {
+  errorAssert(minimumAmountToPlay >= 50, "Invalid value for Minimum Amount to Play, minimum of 50 units");
+  this->inGamePlayers->forEachPlayerRaiseMoney(minimumAmountToPlay, this->inGamePlayers->length() - 1);
 }
