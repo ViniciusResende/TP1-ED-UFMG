@@ -28,8 +28,9 @@ INCLUDE_FOLDER = ./include/
 BIN_FOLDER = ./bin/
 OBJ_FOLDER = ./obj/
 SRC_FOLDER = ./src/
-ASSETS_FOLDER = ./assets/
-OUT_FOLDER = ./out/
+
+#files
+OUTPUT_FILE = ./saida.txt
 
 # all sources, objs, and header files
 MAIN = Main
@@ -51,4 +52,4 @@ $(OBJ_FOLDER)%.o: $(SRC_FOLDER)%.cpp
 	$(CC) $(CXXFLAGS) -c $< -o $@ -I$(INCLUDE_FOLDER)
 
 clean:
-	@rm -rf $(OBJ_FOLDER)* $(BIN_FOLDER)* $(OUT_FOLDER)* gmon.out
+	@rm -rf $(OBJ_FOLDER)* $(BIN_FOLDER)* $(OUTPUT_FILE) gmon.out
