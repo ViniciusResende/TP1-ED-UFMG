@@ -24,26 +24,20 @@ Vector<T>::Vector(int size) {
 
 template<typename T>
 int Vector<T>::length() {
-  READMEMLOG((long int)(&(this->size)), sizeof(int), this->id);
   return this->size;
 }
 
 template<typename T>
 bool Vector<T>::vectorIsFullfilled() {
-  READMEMLOG((long int)(&(this->size)), sizeof(int), this->id);
-  READMEMLOG((long int)(&(this->lastInputedIndex)), sizeof(int), this->id);
-
   return (this->size - 1) == this->lastInputedIndex;
 }
 
 template<typename T>
 T Vector<T>::warmUpVector() {  
   T aux = this->value[0];
-  READMEMLOG((long int)(&(this->value[0])), sizeof(T), this->id);
 
   for (int i=1; i<this->size; i++){
     aux = this->value[i];
-    READMEMLOG((long int)(&(this->value[i])), sizeof(T), this->id);
   }
 
   return aux;
@@ -54,7 +48,6 @@ void Vector<T>::setElement(int idx, T value) {
   errorAssert((idx >= 0) && (idx < this->size), "Invalid Vector index");
 
   this->value[idx] = value;
-  WRITEMEMLOG((long int) (&(this->value[idx])), sizeof(T), this->id);
 
   if(idx > this->lastInputedIndex)
     this->lastInputedIndex = idx;
@@ -66,14 +59,12 @@ void Vector<T>::pushBack(T value) {
 
   this->lastInputedIndex += 1;
   this->value[this->lastInputedIndex] = value;
-  WRITEMEMLOG((long int) (&(this->value[this->lastInputedIndex])), sizeof(T), this->id);
 }
 
 template<typename T>
 T Vector<T>::getElement(int idx) {
   errorAssert((idx >= 0) && (idx < this->size), "Invalid Vector index");
 
-  READMEMLOG((long int) (&(this->value[idx])), sizeof(T), this->id);
   return this->value[idx];
 }
 
