@@ -22,7 +22,6 @@
 # cc and flags
 CC = g++
 CXXFLAGS = -pg -std=c++11 -g -Wall
-#CXXFLAGS = -pg -std=c++11 -g -Wall
 
 # folders
 INCLUDE_FOLDER = ./include/
@@ -34,16 +33,19 @@ OUT_FOLDER = ./out/
 
 # all sources, objs, and header files
 MAIN = Main
-TARGET = run.out
+TARGET = tp1.out
 SRC = $(wildcard $(SRC_FOLDER)*.cpp)
 OBJ = $(patsubst $(SRC_FOLDER)%.cpp, $(OBJ_FOLDER)%.o, $(SRC))
-EXE = $(BIN_FOLDER)/run.out
+EXE = $(BIN_FOLDER)/tp1.out
 ANALISAMEM = ./analisamem/bin/analisamem
 
-all: build
+all: build run
 
 build: $(OBJ)
 	$(CC) $(CXXFLAGS) -o $(BIN_FOLDER)$(TARGET) $(OBJ)
+
+run: $(EXE)
+	$(EXE) -p /tmp/poker.out
 
 $(OBJ_FOLDER)%.o: $(SRC_FOLDER)%.cpp
 	$(CC) $(CXXFLAGS) -c $< -o $@ -I$(INCLUDE_FOLDER)
