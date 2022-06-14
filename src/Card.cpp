@@ -6,7 +6,7 @@
 
 
 Card::Card(int cardNumber, char cardSuit, int id) {
-  errorAssert(cardNumber > 0 && cardNumber <= 13, "Invalid card number");
+  errorAssert(cardNumber > 1 && cardNumber <= 14, "Invalid card number");
   errorAssert((cardSuit == HEARTHS) || (cardSuit == DIAMONDS) || (cardSuit == CLUBS) || (cardSuit == SPADE), "Invalid card SUIT");
 
   this->id = id;

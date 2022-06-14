@@ -100,12 +100,13 @@ void Player::printPlayer() {
 
 bool Player::verifyStraight() {
   int currentIndex = 1;
+  int necessaryIterations = HAND_DEFAULT_SIZE;
 
-  // logic that handles cases where there is a A that can be used as the greatest card
-  if(this->getPlayerCardByIndex(0).getCardNumber() == 1 && this->getPlayerCardByIndex(1).getCardNumber() == 10)
-    currentIndex = 2;
+  // logic that handles cases where there is an Ace that can be used as the greatest card
+  if(this->getPlayerCardByIndex(0).getCardNumber() == 2 && this->getPlayerCardByIndex(4).getCardNumber() == 14)
+    necessaryIterations -= 1;
 
-  while (currentIndex < HAND_DEFAULT_SIZE) {
+  while (currentIndex < necessaryIterations) {
     if((this->getPlayerCardByIndex(currentIndex).getCardNumber() - this->getPlayerCardByIndex(currentIndex - 1).getCardNumber()) != 1)
       return false;
     currentIndex++;
@@ -119,7 +120,7 @@ int Player::handleFlush() {
   if(!(this->verifyStraight()))
     return FLUSH;
 
-  if(this->getPlayerCardByIndex(HAND_DEFAULT_SIZE - 1).getCardNumber() == 13 && this->getPlayerCardByIndex(0).getCardNumber() == 1)
+  if(this->getPlayerCardByIndex(HAND_DEFAULT_SIZE - 1).getCardNumber() == 14 && this->getPlayerCardByIndex(HAND_DEFAULT_SIZE - 2).getCardNumber() == 13)
     return ROYAL_STRAIGHT_FLUSH;
     
   return STRAIGHT_FLUSH;

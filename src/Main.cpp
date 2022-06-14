@@ -13,8 +13,8 @@
 #include "Match.hpp"
 #include "Game.hpp"
 
-#define DEFAULT_INPUT_FILE "../assets/entrada.txt"
-#define DEFAULT_OUTPUT_FILE "../assets/saida.txt"
+#define DEFAULT_INPUT_FILE "./entrada.txt"
+#define DEFAULT_OUTPUT_FILE "./saida.txt"
 
 struct ConfigStruct {
   bool regmem;
@@ -84,6 +84,9 @@ Vector<Card>* handOfCardsFactory(std::ifstream &inputFile, std::string buffer, i
     cardSpecification.pop_back();
 
     int cardNumber = stoi(cardSpecification);
+    //Necessary to assure that the Ace Card is the biggest one
+    if(cardNumber == 1)
+      cardNumber = 14;
 
     Card currentCard = Card(cardNumber, cardSuit, id);
     playerHand->setElement(k, currentCard);
@@ -155,15 +158,19 @@ Match matchFactory(std::ifstream &inputFile, std::ofstream &outFile, Game* maste
 
   bool isChargeOperationValid;
   masterGame->chargeTheMinimunAmountToPlay(minimumAmountToPlay, isChargeOperationValid);
-  if(isChargeOperationValid){
+  if(isChargeOperationValid) {
     bool isGetMatchRestultValid;
     currentMatch.getMatchResult(masterGame->inGamePlayers->length(), isGetMatchRestultValid, outFile);  
 
     if(isGetMatchRestultValid) {
       if(config.regmem) currentMatch.printMatch();
-    } else 
+    } else {
       masterGame->giveBackTheMinimunAmountToPlay(minimumAmountToPlay);
-  }
+      outFile << "0 0 I" << std::endl;
+    }
+  } else
+    outFile << "0 0 I" << std::endl;
+  
 
   return currentMatch;
 }

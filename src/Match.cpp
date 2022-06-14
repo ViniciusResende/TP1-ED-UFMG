@@ -51,6 +51,8 @@ int Match::comparePlayersByCard(Player* firstPlayer, int firstCardIndexToCompare
 int Match::playerTieBreaker(Player* currentWinner, Player* challengerOfWinner) {
   int tieGame = currentWinner->gameInHand;
 
+  int const FIRST_PLAYER_HAS_WON = 1;
+  int const SECOND_PLAYER_HAS_WON = 2;
   int const NONE_OF_PLAYERS_WON = 0;
 
   int gameResultAux;
@@ -122,6 +124,26 @@ int Match::playerTieBreaker(Player* currentWinner, Player* challengerOfWinner) {
         return NONE_OF_PLAYERS_WON;
       }
     case STRAIGHT:
+      // verify 10, 11, 12, 13, 14
+      if(currentWinner->getPlayerCardByIndex(4).getCardNumber() == 14 && challengerOfWinner->getPlayerCardByIndex(4).getCardNumber() == 14) {
+        if(currentWinner->getPlayerCardByIndex(3).getCardNumber() == 13) {
+          if(challengerOfWinner->getPlayerCardByIndex(3).getCardNumber() == 13) {
+            return NONE_OF_PLAYERS_WON;
+          } else 
+            return FIRST_PLAYER_HAS_WON;
+        } else if(challengerOfWinner->getPlayerCardByIndex(3).getCardNumber() == 13)
+          return SECOND_PLAYER_HAS_WON;
+        else if (currentWinner->getPlayerCardByIndex(0).getCardNumber() == 2 && challengerOfWinner->getPlayerCardByIndex(0).getCardNumber() == 2)
+          return NONE_OF_PLAYERS_WON;
+      }
+
+      // verify 1, 2, 3, 4, 5
+      if(currentWinner->getPlayerCardByIndex(4).getCardNumber() == 14 && currentWinner->getPlayerCardByIndex(0).getCardNumber() == 2) {
+        return SECOND_PLAYER_HAS_WON;
+      } else if (challengerOfWinner->getPlayerCardByIndex(4).getCardNumber() == 14 && challengerOfWinner->getPlayerCardByIndex(0).getCardNumber() == 2) {
+        return FIRST_PLAYER_HAS_WON;
+      }
+        
       return this->comparePlayersByCard(currentWinner, 4, challengerOfWinner, 4);
     case FLUSH:
       return this->comparePlayersByCard(currentWinner, 4, challengerOfWinner, 4);
@@ -164,7 +186,27 @@ int Match::playerTieBreaker(Player* currentWinner, Player* challengerOfWinner) {
         return this->comparePlayersByCard(currentWinner, currentWinnerNonQuadrupleIndex, challengerOfWinner, challengerOfWinnerNonQuadrupleIndex);
       }  
     case STRAIGHT_FLUSH:
-      return NONE_OF_PLAYERS_WON;
+      // verify 10, 11, 12, 13, 14
+      if(currentWinner->getPlayerCardByIndex(4).getCardNumber() == 14 && challengerOfWinner->getPlayerCardByIndex(4).getCardNumber() == 14) {
+        if(currentWinner->getPlayerCardByIndex(3).getCardNumber() == 13) {
+          if(challengerOfWinner->getPlayerCardByIndex(3).getCardNumber() == 13) {
+            return NONE_OF_PLAYERS_WON;
+          } else 
+            return FIRST_PLAYER_HAS_WON;
+        } else if(challengerOfWinner->getPlayerCardByIndex(3).getCardNumber() == 13)
+          return SECOND_PLAYER_HAS_WON;
+        else if (currentWinner->getPlayerCardByIndex(0).getCardNumber() == 2 && challengerOfWinner->getPlayerCardByIndex(0).getCardNumber() == 2)
+          return NONE_OF_PLAYERS_WON;
+      }
+
+      // verify 1, 2, 3, 4, 5
+      if(currentWinner->getPlayerCardByIndex(4).getCardNumber() == 14 && currentWinner->getPlayerCardByIndex(0).getCardNumber() == 2) {
+        return SECOND_PLAYER_HAS_WON;
+      } else if (challengerOfWinner->getPlayerCardByIndex(4).getCardNumber() == 14 && challengerOfWinner->getPlayerCardByIndex(0).getCardNumber() == 2) {
+        return FIRST_PLAYER_HAS_WON;
+      }
+        
+      return this->comparePlayersByCard(currentWinner, 4, challengerOfWinner, 4);
     case ROYAL_STRAIGHT_FLUSH:
       return NONE_OF_PLAYERS_WON;
     default:
